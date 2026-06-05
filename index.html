@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waypoint Health | Connecting patients, providers, and everyone in between.</title>
+<meta name="description" content="Waypoint Health connects surgeons, facilities, payers, and partners to deliver best-in-class surgical care — coordinated end to end and reimbursed quickly and fairly.">
+<meta property="og:title" content="Waypoint Health">
+<meta property="og:description" content="Connecting patients, providers, and everyone in between.">
+<meta property="og:type" content="website">
+
+<!--
+  ============================================================
+  WAYPOINT HEALTH  —  single-page site
+  Drop-in ready for GitHub Pages (keep the filename index.html).
+
+  >>> PLACEHOLDERS TO UPDATE BEFORE YOU GO LIVE <<<
+    • Phone .......... search for  PHONE_PLACEHOLDER   (555 = fake)
+    • Email .......... search for  EMAIL_PLACEHOLDER
+    • Address ........ search for  ADDRESS_PLACEHOLDER
+    • LinkedIn ....... search for  LINKEDIN_PLACEHOLDER
+    • Form delivery .. the contact form shows a success message
+                       client-side only. To actually receive
+                       submissions for free, paste a Formspree
+                       endpoint where it says FORM_ENDPOINT below.
+  ============================================================
+-->
+
+<!-- favicon: the Waypoint marker, inline so there are no extra files -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A2623'/%3E%3Crect x='8' y='8' width='16' height='16' rx='4' transform='rotate(45 16 16)' fill='none' stroke='%23F5F1E8' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3.2' fill='%23E8623C'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+
+<style>
+/* ============================ TOKENS ============================ */
+:root{
+  --ink:#0A2623;          /* deepest teal — dark sections */
+  --ink-2:#0C2F2B;
+  --deep:#0E3733;         /* deep teal panels */
+  --teal:#16524C;
+  --teal-bright:#2E837A;  /* lines / glints on dark */
+  --mint:#9AD7CD;         /* soft accent on dark */
+  --mint-dim:#6FB4AA;
+
+  --cream:#F5F1E8;        /* warm paper — light sections */
+  --cream-2:#EFE9DB;
+  --sand:#E4DBC8;         /* borders on light */
+  --sand-2:#D8CEB6;
+
+  --signal:#E8623C;       /* coral beacon — primary accent */
+  --signal-deep:#C94E2C;
+  --signal-soft:#F2A98E;
+
+  --text:#16302C;         /* body text on cream */
+  --muted:#5C6C67;        /* muted text on cream */
+  --on-dark:#EAF3F0;      /* text on dark */
+  --on-dark-mut:#9FBDB6;  /* muted text on dark */
+
+  --maxw:1180px;
+  --r:18px;               /* card radius */
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 24px 60px -28px rgba(6,30,27,.45);
+
+  --ff-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --ff-body:"Hanken Grotesk", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --ff-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:84px; -webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important} }
+
+body{
+  margin:0;
+  font-family:var(--ff-body);
+  color:var(--text);
+  background:var(--cream);
+  line-height:1.6;
+  font-size:17px;
+  letter-spacing:.005em;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* faint film-grain for depth */
+body::after{
+  content:""; position:fixed; inset:0; z-index:1200; pointer-events:none; opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img,svg{display:block; max-width:100%}
+a{color:inherit; text-decoration:none}
+
+/* ============================ TYPE ============================ */
+h1,h2,h3,h4{font-family:var(--ff-display); font-weight:400; line-height:1.05; margin:0; letter-spacing:-.01em}
+h2{font-size:clamp(2rem,1.2rem + 2.7vw,3.15rem)}
+h3{font-size:clamp(1.25rem,1.05rem + .7vw,1.55rem); line-height:1.12}
+.serif-i{font-style:italic; font-weight:400}
+
+.eyebrow{
+  font-family:var(--ff-mono); font-size:.74rem; letter-spacing:.26em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:.6em; color:var(--signal);
+}
+.eyebrow::before{content:"◇"; font-size:.7em; opacity:.9}
+.eyebrow.on-dark{color:var(--signal-soft)}
+
+.lead{font-size:clamp(1.05rem,1rem + .4vw,1.28rem); color:var(--muted); max-width:60ch}
+.on-dark .lead, .lead.on-dark{color:var(--on-dark-mut)}
+
+/* ============================ LAYOUT ============================ */
+.wrap{max-width:var(--maxw); margin-inline:auto; padding-inline:24px}
+section{padding:clamp(64px,9vw,120px) 0; position:relative}
+.sec-head{max-width:760px; margin-bottom:clamp(36px,5vw,60px)}
+.sec-head .eyebrow{margin-bottom:18px}
+.sec-head h2{margin-bottom:18px}
+
+/* ============================ BUTTONS ============================ */
+.btn{
+  --bg:var(--signal); --fg:#fff;
+  display:inline-flex; align-items:center; gap:.6em; cursor:pointer;
+  font-family:var(--ff-body); font-weight:600; font-size:.98rem; letter-spacing:.01em;
+  padding:.85em 1.35em; border-radius:999px; border:1px solid transparent;
+  background:var(--bg); color:var(--fg);
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+  box-shadow:0 12px 28px -14px rgba(232,98,60,.85);
+}
+.btn:hover{transform:translateY(-2px); background:var(--signal-deep)}
+.btn .arr{transition:transform .25s var(--ease)}
+.btn:hover .arr{transform:translateX(3px)}
+.btn.ghost{
+  background:transparent; color:inherit; border-color:currentColor; box-shadow:none; opacity:.92;
+}
+.btn.ghost:hover{background:rgba(255,255,255,.06); transform:translateY(-2px)}
+.linklike{
+  display:inline-flex; align-items:center; gap:.45em; font-weight:600; color:var(--signal);
+  font-size:.96rem; transition:gap .25s var(--ease);
+}
+.linklike:hover{gap:.8em}
+.linklike .arr{transition:transform .25s var(--ease)}
+.linklike:hover .arr{transform:translateX(3px)}
+
+/* ============================ NAV ============================ */
+header.nav{position:fixed; top:0; left:0; right:0; z-index:1000; transition:background .35s var(--ease), box-shadow .35s var(--ease), border-color .35s}
+.nav-inner{
+  max-width:var(--maxw); margin-inline:auto; padding:14px 24px;
+  display:flex; align-items:center; gap:24px;
+}
+.brand{display:flex; align-items:center; gap:.6em; color:var(--on-dark); font-family:var(--ff-display); font-size:1.18rem; letter-spacing:-.01em}
+.brand .mark{width:30px; height:30px; flex:0 0 auto}
+.brand b{font-weight:500}
+.nav-links{display:flex; align-items:center; gap:6px; margin-left:auto}
+.nav-links a{
+  font-size:.92rem; font-weight:500; color:var(--on-dark); padding:8px 12px; border-radius:999px;
+  opacity:.82; transition:opacity .2s, background .2s, color .2s; position:relative;
+}
+.nav-links a:hover{opacity:1}
+.nav-links a.active{opacity:1}
+.nav-links a.active::after{
+  content:""; position:absolute; left:12px; right:12px; bottom:2px; height:2px; border-radius:2px; background:var(--signal);
+}
+.nav-cta{margin-left:6px}
+
+/* scrolled state */
+header.nav.scrolled{background:rgba(245,241,232,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 1px 0 var(--sand), 0 18px 40px -32px rgba(6,30,27,.4)}
+header.nav.scrolled .brand{color:var(--text)}
+header.nav.scrolled .nav-links a{color:var(--text)}
+header.nav.scrolled .btn.ghost{color:var(--text)}
+
+.menu-btn{display:none; margin-left:auto; width:44px; height:44px; border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.06); border-radius:12px; cursor:pointer; align-items:center; justify-content:center; color:var(--on-dark)}
+header.nav.scrolled .menu-btn{color:var(--text); border-color:var(--sand-2); background:rgba(0,0,0,.03)}
+.menu-btn span,.menu-btn span::before,.menu-btn span::after{content:""; display:block; width:20px; height:2px; background:currentColor; border-radius:2px; position:relative; transition:transform .3s var(--ease), opacity .2s}
+.menu-btn span::before{position:absolute; top:-6px}
+.menu-btn span::after{position:absolute; top:6px}
+body.menu-open .menu-btn span{background:transparent}
+body.menu-open .menu-btn span::before{transform:translateY(6px) rotate(45deg)}
+body.menu-open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
+
+/* ============================ HERO ============================ */
+.hero{
+  background:
+    radial-gradient(1200px 600px at 78% -10%, rgba(46,131,122,.35), transparent 60%),
+    radial-gradient(900px 500px at 0% 110%, rgba(232,98,60,.16), transparent 55%),
+    var(--ink);
+  color:var(--on-dark); padding-top:150px; padding-bottom:clamp(60px,8vw,110px); overflow:hidden;
+}
+.hero .wrap{position:relative; z-index:2}
+.hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:54px; align-items:center}
+.hero h1{
+  font-size:clamp(2.6rem,1.6rem + 3.9vw,4.7rem); line-height:1.0; letter-spacing:-.02em; margin:22px 0 0;
+  color:#FCFAF4;
+}
+.hero h1 .serif-i{color:var(--signal-soft)}
+.hero p.lead{margin:24px 0 32px}
+.hero-cta{display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+.hero-stats{display:flex; gap:30px; margin-top:42px; flex-wrap:wrap}
+.hero-stats div{display:flex; flex-direction:column}
+.hero-stats b{font-family:var(--ff-display); font-size:1.7rem; line-height:1; color:#fff}
+.hero-stats span{font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--on-dark-mut); margin-top:7px}
+
+/* hero console panel */
+.console{
+  position:relative; border:1px solid rgba(154,215,205,.22); border-radius:22px;
+  background:linear-gradient(160deg, rgba(14,55,51,.9), rgba(10,38,35,.92));
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+  padding:16px;
+}
+.console-bar{display:flex; align-items:center; gap:8px; padding:4px 6px 12px; font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.12em; color:var(--on-dark-mut); text-transform:uppercase}
+.console-bar i{width:8px; height:8px; border-radius:50%; background:var(--teal-bright); display:inline-block}
+.console-bar i:nth-child(2){background:var(--mint-dim)}
+.console-bar i:nth-child(3){background:var(--signal)}
+.console-bar span{margin-left:auto; opacity:.8}
+.console svg{width:100%; height:auto; border-radius:14px; background:radial-gradient(120% 120% at 50% 0%, rgba(46,131,122,.12), transparent 70%)}
+.legend{display:flex; gap:18px; flex-wrap:wrap; padding:14px 8px 6px; font-family:var(--ff-mono); font-size:.66rem; letter-spacing:.08em; color:var(--on-dark-mut); text-transform:uppercase}
+.legend i{display:inline-flex; align-items:center; gap:7px}
+.legend .dot{width:9px; height:9px; background:var(--mint); border-radius:50%}
+.legend .sq{width:9px; height:9px; background:var(--teal-bright); border-radius:2px}
+.legend .tri{width:0; height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-bottom:9px solid var(--mint-dim)}
+.legend .dia{width:9px; height:9px; background:var(--signal); transform:rotate(45deg)}
+
+/* network svg bits */
+.spoke{stroke:var(--teal-bright); stroke-width:1.4; stroke-dasharray:2 7; fill:none; opacity:.55; animation:crawl 6s linear infinite}
+@keyframes crawl{to{stroke-dashoffset:-90}}
+.contour{fill:none; stroke:rgba(154,215,205,.12); stroke-width:1}
+.node-label{font-family:var(--ff-mono); font-size:10px; letter-spacing:.12em; fill:var(--on-dark-mut)}
+.coord{font-family:var(--ff-mono); font-size:10px; letter-spacing:.1em; fill:var(--mint-dim)}
+.flow{fill:var(--signal)}
+.ring{fill:none; stroke:var(--signal); transform-origin:300px 250px}
+.ring.r1{animation:pulse 2.6s ease-out infinite}
+.ring.r2{animation:pulse 2.6s ease-out infinite 1.3s}
+@keyframes pulse{0%{r:14px; opacity:.7; stroke-width:2}100%{r:46px; opacity:0; stroke-width:.5}}
+
+/* ============================ WHAT WE DO ============================ */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:14px}
+.aud-card{
+  border:1px solid var(--sand); border-radius:var(--r); padding:30px; background:#fffdf8;
+  display:flex; flex-direction:column; gap:14px; transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
+}
+.aud-card:hover{transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--sand-2)}
+.aud-card .badge{width:46px; height:46px; border-radius:12px; background:var(--ink); display:grid; place-items:center; color:var(--mint)}
+.aud-card h3{margin-top:4px}
+.aud-card p{color:var(--muted); margin:0; font-size:1rem}
+
+/* stats route strip */
+.route-strip{
+  margin-top:clamp(40px,5vw,64px); border-top:1px dashed var(--sand-2); padding-top:42px; position:relative;
+}
+.route-strip .rs-label{font-family:var(--ff-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:26px}
+.stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; position:relative}
+.stat-row::before{content:""; position:absolute; top:18px; left:6%; right:6%; height:2px; background-image:linear-gradient(90deg,var(--sand-2) 50%,transparent 0); background-size:14px 2px; background-repeat:repeat-x; opacity:.9}
+.stat{position:relative; padding-top:42px; text-align:center}
+.stat .pin{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:20px; height:20px; background:var(--cream); border-radius:50%; display:grid; place-items:center}
+.stat .pin i{width:11px; height:11px; background:var(--signal); border-radius:50%; box-shadow:0 0 0 3px rgba(232,98,60,.18)}
+.stat b{display:block; font-family:var(--ff-display); font-size:clamp(2rem,1.4rem + 2vw,2.9rem); line-height:1; color:var(--text)}
+.stat span{display:block; margin-top:8px; font-size:.85rem; color:var(--muted); letter-spacing:.01em}
+
+/* ============================ WHO WE SERVE ============================ */
+.serve{background:linear-gradient(180deg,var(--cream),var(--cream-2))}
+.serve-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+.serve-card{
+  background:#fffdf8; border:1px solid var(--sand); border-radius:var(--r); padding:30px;
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s; position:relative; overflow:hidden;
+}
+.serve-card::before{content:""; position:absolute; inset:0; background:radial-gradient(180px 140px at 100% 0%, rgba(46,131,122,.07), transparent 70%); opacity:0; transition:opacity .3s}
+.serve-card:hover{transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--sand-2)}
+.serve-card:hover::before{opacity:1}
+.serve-card .ic{width:50px; height:50px; border-radius:13px; background:var(--ink); color:var(--mint); display:grid; place-items:center; margin-bottom:18px}
+.serve-card h3{margin-bottom:10px}
+.serve-card p{color:var(--muted); font-size:1rem; margin:0 0 20px}
+.tags{display:flex; flex-wrap:wrap; gap:9px}
+.tag{
+  font-size:.84rem; font-weight:500; padding:.42em .85em; border-radius:999px;
+  background:var(--cream-2); border:1px solid var(--sand-2); color:var(--text);
+  transition:background .2s, color .2s, transform .2s; cursor:default;
+}
+.tag:hover{background:var(--ink); color:var(--mint); border-color:var(--ink); transform:translateY(-1px)}
+
+/* ============================ SERVICES ============================ */
+.services{background:var(--ink); color:var(--on-dark)}
+.services .lead{color:var(--on-dark-mut)}
+.svc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:8px}
+.svc{
+  border:1px solid rgba(154,215,205,.16); border-radius:var(--r); padding:30px;
+  background:linear-gradient(165deg, rgba(14,55,51,.6), rgba(10,38,35,.4));
+  position:relative; transition:transform .3s var(--ease), border-color .3s, background .3s;
+}
+.svc:hover{transform:translateY(-5px); border-color:rgba(154,215,205,.4); background:linear-gradient(165deg, rgba(20,82,76,.55), rgba(12,47,43,.5))}
+.svc .wp{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px}
+.svc .num{font-family:var(--ff-mono); font-size:.78rem; letter-spacing:.18em; color:var(--signal-soft)}
+.svc .ic{width:50px; height:50px; border-radius:13px; background:rgba(232,98,60,.14); color:var(--signal-soft); display:grid; place-items:center}
+.svc h3{color:#fff; margin-bottom:12px}
+.svc p{color:var(--on-dark-mut); font-size:1rem; margin:0}
+
+/* ============================ OUTCOMES ============================ */
+.outcomes{background:linear-gradient(180deg,var(--cream-2),var(--cream))}
+.out-grid{display:grid; grid-template-columns:1fr 1.05fr; gap:54px; align-items:center}
+.out-copy p{color:var(--muted)}
+.out-mini{display:inline-flex; align-items:baseline; gap:12px; margin-top:26px; padding:16px 22px; border:1px dashed var(--sand-2); border-radius:14px; background:#fffdf8}
+.out-mini b{font-family:var(--ff-display); font-size:2rem; color:var(--text); line-height:1}
+.out-mini span{font-size:.92rem; color:var(--muted)}
+
+.gauge-card{background:#fffdf8; border:1px solid var(--sand); border-radius:var(--r); padding:30px; box-shadow:var(--shadow)}
+.gauge{margin-bottom:30px}
+.gauge:last-child{margin-bottom:0}
+.gauge .g-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px}
+.gauge .g-title{font-weight:600; font-size:1.02rem}
+.gauge .g-sub{font-family:var(--ff-mono); font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.bar-line{display:flex; align-items:center; gap:14px; margin-bottom:12px}
+.bar-line:last-child{margin-bottom:0}
+.bar-line .bl-name{flex:0 0 92px; font-size:.82rem; color:var(--muted)}
+.bar-track{flex:1; height:30px; background:var(--cream-2); border-radius:8px; overflow:hidden; position:relative; border:1px solid var(--sand)}
+.bar-fill{height:100%; width:0; border-radius:8px 0 0 8px; transition:width 1.1s var(--ease); display:flex; align-items:center; justify-content:flex-end; padding-right:10px}
+.bar-fill.us{background:linear-gradient(90deg,var(--signal),var(--signal-deep))}
+.bar-fill.avg{background:repeating-linear-gradient(45deg,var(--sand-2),var(--sand-2) 6px,var(--sand) 6px,var(--sand) 12px)}
+.bar-fill b{font-family:var(--ff-mono); font-size:.78rem; font-weight:500; color:#fff}
+.bar-fill.avg b{color:var(--text)}
+
+/* ============================ TESTIMONIALS ============================ */
+.tmint{background:var(--deep); color:var(--on-dark)}
+.tmint .eyebrow{color:var(--signal-soft)}
+.t-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:8px}
+.tcard{
+  border:1px solid rgba(154,215,205,.16); border-radius:var(--r); padding:30px;
+  background:linear-gradient(165deg, rgba(20,82,76,.4), rgba(10,38,35,.35)); position:relative;
+  transition:transform .3s var(--ease), border-color .3s;
+}
+.tcard:hover{transform:translateY(-4px); border-color:rgba(154,215,205,.34)}
+.tcard .qm{font-family:var(--ff-display); font-size:3.4rem; line-height:.6; color:var(--signal); height:24px; overflow:hidden}
+.tcard p{font-size:1.06rem; color:var(--on-dark); margin:14px 0 24px; font-family:var(--ff-display); font-weight:300; font-style:italic; line-height:1.45}
+.tcard .who{display:flex; align-items:center; gap:14px}
+.avatar{width:46px; height:46px; flex:0 0 auto; border-radius:50%; display:grid; place-items:center; font-family:var(--ff-mono); font-size:.86rem; font-weight:500; color:var(--ink); background:linear-gradient(150deg,var(--mint),var(--mint-dim)); letter-spacing:.04em}
+.who b{display:block; color:#fff; font-weight:600; font-size:.98rem; font-family:var(--ff-body)}
+.who span{font-size:.84rem; color:var(--on-dark-mut)}
+
+/* ============================ CONTACT ============================ */
+.contact{background:var(--ink); color:var(--on-dark); overflow:hidden}
+.contact .eyebrow{color:var(--signal-soft)}
+.c-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:54px; align-items:start}
+.contact h2{color:#fff}
+.contact .lead{color:var(--on-dark-mut); margin-top:16px}
+
+/* airtable embed */
+.airtable-wrap{
+  margin-top:22px; border-radius:var(--r); overflow:hidden;
+  border:1px solid rgba(154,215,205,.22); background:#fff; box-shadow:var(--shadow);
+}
+.airtable-wrap iframe{display:block; width:100%; height:560px; border:0; background:transparent}
+@media (max-width:760px){ .airtable-wrap iframe{height:640px} }
+
+.form{margin-top:18px; display:grid; gap:16px}
+.field{display:flex; flex-direction:column; gap:7px}
+.field label{font-family:var(--ff-mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--on-dark-mut)}
+.field input,.field select,.field textarea{
+  font-family:var(--ff-body); font-size:1rem; color:var(--on-dark);
+  background:rgba(255,255,255,.05); border:1px solid rgba(154,215,205,.22); border-radius:12px;
+  padding:13px 15px; transition:border-color .2s, background .2s; width:100%;
+}
+.field textarea{resize:vertical; min-height:96px}
+.field input::placeholder,.field textarea::placeholder{color:#6f8c86}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none; border-color:var(--signal); background:rgba(255,255,255,.08)}
+.field select{appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%239FBDB6' stroke-width='2'%3E%3Cpath d='M3 5l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 15px center; padding-right:40px}
+.field select option{color:#000}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.form .btn{justify-content:center; margin-top:4px}
+
+.form-ok{
+  display:none; border:1px solid rgba(154,215,205,.3); border-radius:var(--r); padding:34px; text-align:center;
+  background:linear-gradient(165deg, rgba(20,82,76,.5), rgba(10,38,35,.4)); margin-top:18px;
+}
+.form-ok.show{display:block; animation:rise .5s var(--ease) both}
+@keyframes rise{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+.form-ok .ok-ic{width:58px; height:58px; margin:0 auto 16px; border-radius:50%; background:rgba(232,98,60,.16); display:grid; place-items:center; color:var(--signal)}
+.form-ok h3{color:#fff; margin-bottom:8px}
+.form-ok p{color:var(--on-dark-mut); margin:0 0 18px}
+
+.c-info{display:grid; gap:14px}
+.c-card{border:1px solid rgba(154,215,205,.18); border-radius:14px; padding:20px 22px; background:rgba(255,255,255,.03); display:flex; gap:16px; align-items:flex-start; transition:border-color .25s, transform .25s var(--ease)}
+.c-card:hover{border-color:rgba(154,215,205,.4); transform:translateY(-2px)}
+.c-card .ic{width:42px; height:42px; flex:0 0 auto; border-radius:11px; background:rgba(232,98,60,.14); color:var(--signal-soft); display:grid; place-items:center}
+.c-card .ct b{display:block; color:#fff; font-size:.78rem; font-family:var(--ff-mono); letter-spacing:.14em; text-transform:uppercase; margin-bottom:4px; font-weight:500}
+.c-card .ct a,.c-card .ct span{color:var(--on-dark-mut); font-size:1rem}
+.c-card .ct a:hover{color:var(--mint)}
+
+/* ============================ FOOTER ============================ */
+footer{background:var(--ink-2); color:var(--on-dark-mut); padding:70px 0 34px; border-top:1px solid rgba(154,215,205,.12)}
+.f-top{display:grid; grid-template-columns:1.4fr repeat(4,1fr); gap:34px}
+.f-brand .brand{color:#fff; margin-bottom:16px}
+.f-brand p{font-size:.92rem; line-height:1.7; max-width:30ch}
+.f-col h4{font-family:var(--ff-mono); font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; color:var(--mint-dim); margin-bottom:16px; font-weight:500}
+.f-col a{display:block; font-size:.92rem; padding:5px 0; color:var(--on-dark-mut); transition:color .2s, padding-left .2s}
+.f-col a:hover{color:var(--mint); padding-left:4px}
+.f-bottom{display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-top:50px; padding-top:24px; border-top:1px solid rgba(154,215,205,.12); font-size:.84rem}
+.f-bottom .fb-links{display:flex; gap:20px}
+.f-bottom a:hover{color:var(--mint)}
+
+/* ============================ REVEAL ============================ */
+.js .reveal{opacity:0; transform:translateY(24px); transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.js .reveal.in{opacity:1; transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+/* ============================ RESPONSIVE ============================ */
+@media (max-width:960px){
+  .hero-grid,.out-grid,.c-grid{grid-template-columns:1fr; gap:40px}
+  .console{order:2}
+  .two,.serve-grid,.t-grid{grid-template-columns:1fr}
+  .svc-grid{grid-template-columns:1fr}
+  .f-top{grid-template-columns:1fr 1fr; gap:30px}
+  .f-brand{grid-column:1 / -1}
+}
+@media (max-width:760px){
+  .nav-links{
+    position:fixed; inset:0 0 auto 0; top:0; padding:90px 24px 30px; flex-direction:column; align-items:stretch; gap:4px;
+    background:var(--ink); transform:translateY(-100%); transition:transform .4s var(--ease); height:100dvh; margin:0;
+    border-bottom:1px solid rgba(154,215,205,.12);
+  }
+  body.menu-open .nav-links{transform:translateY(0)}
+  .nav-links a{color:var(--on-dark)!important; opacity:.9; font-size:1.15rem; padding:14px 6px; border-bottom:1px solid rgba(154,215,205,.1)}
+  .nav-links a.active::after{display:none}
+  .nav-links .nav-cta{margin-top:18px}
+  .nav-links .btn{justify-content:center}
+  .menu-btn{display:flex}
+  .stat-row{grid-template-columns:1fr 1fr; gap:30px 18px}
+  .stat-row::before{display:none}
+  .two-col{grid-template-columns:1fr}
+  .hero-stats{gap:22px 30px}
+  .f-bottom{flex-direction:column; align-items:flex-start}
+}
+@media (max-width:430px){
+  body{font-size:16px}
+  .wrap{padding-inline:18px}
+  .f-top{grid-template-columns:1fr}
+  .hero-cta{flex-direction:column; align-items:stretch}
+  .hero-cta .btn{justify-content:center}
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="Waypoint Health home">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="8" y="8" width="16" height="16" rx="4.5" transform="rotate(45 16 16)" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="16" r="3.3" fill="var(--signal)"/>
+      </svg>
+      <span>Waypoint <b>Health</b></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#what">What We Do</a>
+      <a href="#serve">Who We Serve</a>
+      <a href="#services">Services</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn ghost nav-cta">Contact Us</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow on-dark reveal">Nationwide surgical care network</span>
+        <h1 class="reveal d1">Connecting patients, providers, and <span class="serif-i">everyone in&nbsp;between.</span></h1>
+        <p class="lead reveal d2">Waypoint Health links surgeons, facilities, payers, and partners to deliver best-in-class surgical care — coordinated end to end and reimbursed quickly and fairly.</p>
+        <div class="hero-cta reveal d3">
+          <a href="#contact" class="btn">Contact Us to Learn More <span class="arr">→</span></a>
+          <a href="#what" class="btn ghost">See how it works</a>
+        </div>
+        <div class="hero-stats reveal d4">
+          <div><b>10M+</b><span>Covered members</span></div>
+          <div><b>350+</b><span>Credentialed surgeons</span></div>
+          <div><b>12k+</b><span>Patients seen</span></div>
+        </div>
+      </div>
+
+      <!-- live "coordination console" -->
+      <div class="console reveal d2" aria-hidden="true">
+        <div class="console-bar"><i></i><i></i><i></i> Care Routing<span>● live</span></div>
+        <svg viewBox="0 0 560 460" role="img">
+          <!-- contour rings -->
+          <ellipse class="contour" cx="300" cy="250" rx="120" ry="92"/>
+          <ellipse class="contour" cx="300" cy="250" rx="180" ry="140"/>
+          <ellipse class="contour" cx="300" cy="250" rx="244" ry="190"/>
+
+          <!-- spokes (hub-and-spoke = connecting everyone) -->
+          <path id="s1" class="spoke" d="M110,120 L300,250"/>
+          <path id="s2" class="spoke" d="M250,80 L300,250"/>
+          <path id="s3" class="spoke" d="M452,150 L300,250"/>
+          <path id="s4" class="spoke" d="M430,352 L300,250"/>
+          <path id="s5" class="spoke" d="M138,338 L300,250"/>
+
+          <!-- flowing care packets toward hub -->
+          <circle class="flow" r="3.2"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#s1"/></animateMotion></circle>
+          <circle class="flow" r="3.2"><animateMotion dur="3.6s" begin="0.7s" repeatCount="indefinite"><mpath href="#s2"/></animateMotion></circle>
+          <circle class="flow" r="3.2"><animateMotion dur="3.4s" begin="1.3s" repeatCount="indefinite"><mpath href="#s3"/></animateMotion></circle>
+          <circle class="flow" r="3.2"><animateMotion dur="3.8s" begin="0.4s" repeatCount="indefinite"><mpath href="#s4"/></animateMotion></circle>
+          <circle class="flow" r="3.2"><animateMotion dur="3.5s" begin="1.9s" repeatCount="indefinite"><mpath href="#s5"/></animateMotion></circle>
+
+          <!-- nodes: ●surgeon ▪facility ▲payer -->
+          <g>
+            <circle cx="110" cy="120" r="6.5" fill="var(--mint)"/>
+            <text class="node-label" x="110" y="100" text-anchor="middle">SURGEON</text>
+
+            <rect x="243" y="73" width="14" height="14" rx="3" fill="var(--teal-bright)"/>
+            <text class="node-label" x="250" y="60" text-anchor="middle">FACILITY</text>
+
+            <path d="M452,142 l8,15 h-16 z" fill="var(--mint-dim)"/>
+            <text class="node-label" x="466" y="135" text-anchor="middle">PAYER</text>
+
+            <circle cx="430" cy="352" r="6.5" fill="var(--mint)"/>
+            <text class="node-label" x="430" y="378" text-anchor="middle">SURGEON</text>
+
+            <rect x="131" y="331" width="14" height="14" rx="3" fill="var(--teal-bright)"/>
+            <text class="node-label" x="138" y="366" text-anchor="middle">ASC</text>
+          </g>
+
+          <!-- pulsing beacon = Waypoint hub -->
+          <circle class="ring r1" cx="300" cy="250"/>
+          <circle class="ring r2" cx="300" cy="250"/>
+          <rect x="288" y="238" width="24" height="24" rx="6" transform="rotate(45 300 250)" fill="var(--signal)"/>
+          <circle cx="300" cy="250" r="4" fill="#fff"/>
+          <text class="coord" x="300" y="296" text-anchor="middle">WAYPOINT · HUB</text>
+
+          <!-- HUD coordinate -->
+          <text class="coord" x="28" y="34">N 40.71° / W 111.94°</text>
+          <text class="coord" x="532" y="438" text-anchor="end">EPISODE · ROUTED</text>
+        </svg>
+        <div class="legend">
+          <i><span class="dot"></span> Surgeon</i>
+          <i><span class="sq"></span> Facility</i>
+          <i><span class="tri"></span> Payer</i>
+          <i><span class="dia"></span> Waypoint</i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHAT WE DO ============================ -->
+<section id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal">What we do</span>
+      <h2 class="reveal d1">One network for the entire<br>surgical episode of care.</h2>
+      <p class="lead reveal d2">Waypoint Health connects surgeons, facilities, payers, and other partners to facilitate the delivery of best-in-class surgical services.</p>
+    </div>
+
+    <div class="two">
+      <div class="aud-card reveal">
+        <div class="badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="16" r="3"/><path d="M10.5 9.5l4 5"/></svg>
+        </div>
+        <h3>Surgeons, Facilities &amp; Providers</h3>
+        <p>Credentialed doctors, facilities, and healthcare organizations use Waypoint Health to access new patient populations.</p>
+        <a href="#contact" class="linklike">Join our network <span class="arr">→</span></a>
+      </div>
+      <div class="aud-card reveal d1">
+        <div class="badge">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l3 3-3 3-3-3z"/><path d="M5 13l3 3-3 3-3-3z"/><path d="M19 13l3 3-3 3-3-3z"/><path d="M10.5 7.5L7 12M13.5 7.5L17 12"/></svg>
+        </div>
+        <h3>Payers, Conveners &amp; Aggregators</h3>
+        <p>Payers, conveners, care coordinators, TPAs, and aggregators use Waypoint Health to access the nation's top medical providers at fair, fixed reimbursement rates.</p>
+        <a href="#contact" class="linklike">Partner with us <span class="arr">→</span></a>
+      </div>
+    </div>
+
+    <!-- stats as waypoints along a route -->
+    <div class="route-strip reveal">
+      <div class="rs-label">// Across a nationwide network</div>
+      <div class="stat-row">
+        <div class="stat"><span class="pin"><i></i></span><b data-count="10" data-suffix="M+">10M+</b><span>Covered members nationwide</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="350" data-suffix="+">350+</b><span>Credentialed surgeons</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="12" data-suffix="k+">12k+</b><span>Patients seen</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="8" data-suffix="k+">8k+</b><span>Surgeries performed</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHO WE SERVE ============================ -->
+<section class="serve" id="serve">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow reveal">Who we serve</span>
+      <h2 class="reveal d1">Every partner in the<br>episode, on one map.</h2>
+    </div>
+
+    <div class="serve-grid">
+      <div class="serve-card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.2"/><path d="M5 20c0-3.4 3.1-6 7-6s7 2.6 7 6"/></svg></div>
+        <h3>Surgeons &amp; Surgical Practices</h3>
+        <p>The nation's top surgeons partner with Waypoint Health to reach patient populations that are otherwise inaccessible. Select your specialty to learn more.</p>
+        <div class="tags"><span class="tag">Metabolic &amp; Bariatric</span><span class="tag">Spine</span><span class="tag">Orthopedic</span><span class="tag">General</span></div>
+      </div>
+
+      <div class="serve-card reveal d1">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V8l8-4 8 4v13"/><path d="M9 21v-5h6v5"/><path d="M12 4V2"/></svg></div>
+        <h3>Healthcare Facilities</h3>
+        <p>Hospitals and ambulatory surgery centers partner with us for fair, timely reimbursement for services provided to covered members. Choose your care setting below.</p>
+        <div class="tags"><span class="tag">ASC</span><span class="tag">Acute-Care Hospital</span><span class="tag">Physician-Owned Hospital</span></div>
+      </div>
+
+      <div class="serve-card reveal">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.4"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="M6.6 7.2l3.6 3.4M17.4 7.2l-3.6 3.4M6.6 16.8l3.6-3.4M17.4 16.8l-3.6-3.4"/></svg></div>
+        <h3>Other Healthcare Organizations</h3>
+        <p>Anesthesia groups, pathologists, implant suppliers, and every entity in the surgical episode secure reimbursement for covered services. Find your profession below.</p>
+        <div class="tags"><span class="tag">Imaging</span><span class="tag">Pathology</span><span class="tag">Anesthesia</span><span class="tag">Devices/Implants</span></div>
+      </div>
+
+      <div class="serve-card reveal d1">
+        <div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></div>
+        <h3>Patient Aggregators</h3>
+        <p>Care coordinators, TPAs, conveners, and other aggregators access the nation's top surgeons, facilities, and downstream providers at fair and fixed reimbursement rates.</p>
+        <div class="tags"><span class="tag">Aggregators</span><span class="tag">Conveners</span><span class="tag">TPAs</span><span class="tag">Workers' Comp</span><span class="tag">Employers</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SERVICES ============================ -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow on-dark reveal">Services</span>
+      <h2 class="reveal d1" style="color:#fff">From referral to reimbursement,<br>routed without the friction.</h2>
+      <p class="lead reveal d2">Waypoint Health places patient referrals with the nation's top surgeons, coordinates the delivery of care, and ensures every party is reimbursed quickly and accurately.</p>
+    </div>
+
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <div class="wp"><span class="num">WAYPOINT 01</span>
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><path d="M7 12h9"/><path d="M13 8l4 4-4 4"/><circle cx="19" cy="12" r="0.5" fill="currentColor"/></svg></div>
+        </div>
+        <h3>Referral Placement</h3>
+        <p>We place patient referrals with highly credentialed, experienced surgeons across bariatric, general, spine, ortho, and other specialties — in every major and most minor U.S. market. Non-network providers are engaged via single-case agreements as needed.</p>
+      </div>
+
+      <div class="svc reveal d1">
+        <div class="wp"><span class="num">WAYPOINT 02</span>
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></div>
+        </div>
+        <h3>Care Coordination</h3>
+        <p>Our care coordination team ensures referred patients are promptly contacted and scheduled, working closely with providers, practice staff, and referral partners to guarantee an exceptional experience for everyone.</p>
+      </div>
+
+      <div class="svc reveal d2">
+        <div class="wp"><span class="num">WAYPOINT 03</span>
+          <div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/><path d="M8.5 16.5l1.5 1.5 3-3"/></svg></div>
+        </div>
+        <h3>Claims &amp; Billing</h3>
+        <p>Our in-house billing team files timely, accurate invoices with payer and referral partners, and guarantees reimbursement to clinical partners — most often through a simple, efficient bundled model.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ OUTCOMES ============================ -->
+<section class="outcomes" id="outcomes">
+  <div class="wrap">
+    <div class="out-grid">
+      <div class="out-copy">
+        <span class="eyebrow reveal">Our commitment to quality</span>
+        <h2 class="reveal d1" style="margin-top:18px">Best-in-class providers.<br>Measurably better outcomes.</h2>
+        <p class="lead reveal d2" style="margin-top:18px">Waypoint Health contracts with the best providers and facilities in the country. Surgeons are thoroughly credentialed before joining the network. Once active, we track the 30-day clinical outcome of every surgery to keep care safe, effective, and best-in-class.</p>
+        <div class="out-mini reveal d3"><b>5k+</b><span>Clinical outcomes reported<br>by surgeons nationwide</span></div>
+      </div>
+
+      <div class="gauge-card reveal d1">
+        <div class="gauge" data-gauge>
+          <div class="g-top"><span class="g-title">Bariatric complication rate</span><span class="g-sub">Lower is better</span></div>
+          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="24.5"><b>2.7%</b></div></div></div>
+          <div class="bar-line"><span class="bl-name">National avg</span><div class="bar-track"><div class="bar-fill avg" data-w="45"><b>5.0%</b></div></div></div>
+        </div>
+        <div class="gauge" data-gauge>
+          <div class="g-top"><span class="g-title">Spine complication rate</span><span class="g-sub">Lower is better</span></div>
+          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="29"><b>3.2%</b></div></div></div>
+          <div class="bar-line"><span class="bl-name">National avg</span><div class="bar-track"><div class="bar-fill avg" data-w="100"><b>11%</b></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TESTIMONIALS ============================ -->
+<section class="tmint" id="testimonials">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow on-dark reveal">Testimonials</span>
+      <h2 class="reveal d1" style="color:#fff">Results from partnering<br>with Waypoint Health.</h2>
+    </div>
+    <div class="t-grid">
+      <div class="tcard reveal">
+        <div class="qm">&ldquo;</div>
+        <p>Waypoint Health has not only increased our patient volume, but their bundled reimbursement model is simple and efficient.</p>
+        <div class="who"><div class="avatar">TB</div><div><b>Dr. Thomas Brown, MD</b><span>Colorado Bariatric Surgery Institute</span></div></div>
+      </div>
+      <div class="tcard reveal d1">
+        <div class="qm">&ldquo;</div>
+        <p>Waypoint Health has given my practice access to a patient population that was previously not accessible to me.</p>
+        <div class="who"><div class="avatar">JA</div><div><b>Dr. Jorge Acosta, MD</b><span>Acosta Bariatric and General Surgery</span></div></div>
+      </div>
+      <div class="tcard reveal">
+        <div class="qm">&ldquo;</div>
+        <p>Our practice has seen a significant increase in patients thanks to our partnership with Waypoint Health.</p>
+        <div class="who"><div class="avatar">SY</div><div><b>Dr. Sherman Yu, MD</b><span>Texas Laparoscopic Consultants</span></div></div>
+      </div>
+      <div class="tcard reveal d1">
+        <div class="qm">&ldquo;</div>
+        <p>Waypoint Health aligns employers with premier, expert care without the delays, hassle, and expense common to spine surgery. As a surgeon, they let me give every patient the very best, personalized care possible.</p>
+        <div class="who"><div class="avatar">PJ</div><div><b>Dr. Paul Johnson, MD</b><span>Orthopedic Associates of Wisconsin</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONTACT ============================ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="c-grid">
+      <div>
+        <span class="eyebrow on-dark reveal">Contact</span>
+        <h2 class="reveal d1" style="margin-top:18px">Partner with Waypoint Health.</h2>
+        <p class="lead reveal d2">Tell us a bit about you and we'll be in touch. Whether you're a surgeon, a facility, a payer, or another partner, we'll connect you to the network.</p>
+
+        <!-- Submissions are collected directly in Airtable.
+             To swap in a different form, replace the iframe src below. -->
+        <div class="airtable-wrap reveal d3">
+          <iframe class="airtable-embed" src="https://airtable.com/embed/appWrCtv6p2oB1B3h/pagfJwupFl3vh3AoP/form" frameborder="0" width="100%" height="533" title="Partner with Waypoint Health" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="c-info reveal d2">
+        <div class="c-card">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></div>
+          <!-- PHONE_PLACEHOLDER: 555 number is fake — replace before launch -->
+          <div class="ct"><b>Call</b><a href="tel:+18015550142">(801) 555-0142</a></div>
+        </div>
+        <div class="c-card">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg></div>
+          <!-- EMAIL_PLACEHOLDER -->
+          <div class="ct"><b>Email</b><a href="mailto:hello@waypointhealth.com">hello@waypointhealth.com</a></div>
+        </div>
+        <div class="c-card">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <!-- ADDRESS_PLACEHOLDER -->
+          <div class="ct"><b>Visit</b><span>1240 Beacon Way, Suite 200<br>South Jordan, UT 84095</span></div>
+        </div>
+        <div class="c-card">
+          <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 014 0v4M11 17v-7"/></svg></div>
+          <!-- LINKEDIN_PLACEHOLDER -->
+          <div class="ct"><b>Connect</b><a href="#" target="_blank" rel="noopener">LinkedIn</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="f-top">
+      <div class="f-brand">
+        <a href="#top" class="brand">
+          <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="8" width="16" height="16" rx="4.5" transform="rotate(45 16 16)" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="3.3" fill="var(--signal)"/></svg>
+          <span>Waypoint <b>Health</b></span>
+        </a>
+        <p>Connecting patients, providers, and everyone in between — across a nationwide surgical care network.</p>
+      </div>
+      <div class="f-col">
+        <h4>For Providers</h4>
+        <a href="#serve">Metabolic &amp; Bariatric</a><a href="#serve">Spine</a><a href="#serve">Orthopedic</a><a href="#serve">General</a>
+      </div>
+      <div class="f-col">
+        <h4>For Facilities</h4>
+        <a href="#serve">ASC</a><a href="#serve">Acute-Care Hospital</a><a href="#serve">Physician-Owned Hospital</a>
+      </div>
+      <div class="f-col">
+        <h4>For Payers</h4>
+        <a href="#serve">Aggregators</a><a href="#serve">Conveners</a><a href="#serve">TPAs</a><a href="#serve">Workers' Comp</a><a href="#serve">Employers</a>
+      </div>
+      <div class="f-col">
+        <h4>Company</h4>
+        <a href="#what">What We Do</a><a href="#services">Services</a><a href="#outcomes">Outcomes</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© <span id="year"></span> Waypoint Health. All rights reserved.</span>
+      <div class="fb-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- year ---------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------- sticky nav state ---------- */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+/* ---------- mobile menu ---------- */
+const menuBtn = document.getElementById('menuBtn');
+const closeMenu = () => { document.body.classList.remove('menu-open'); menuBtn.setAttribute('aria-expanded','false'); };
+menuBtn.addEventListener('click', () => {
+  const open = document.body.classList.toggle('menu-open');
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+document.querySelectorAll('#navLinks a').forEach(a => a.addEventListener('click', closeMenu));
+
+/* ---------- reveal on scroll ---------- */
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); revealIO.unobserve(e.target); } });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* ---------- count-up stats ---------- */
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+    const dur = 1300, t0 = performance.now();
+    const step = (now) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    countIO.unobserve(el);
+  });
+}, {threshold:0.6});
+document.querySelectorAll('[data-count]').forEach(el => countIO.observe(el));
+
+/* ---------- outcome bars ---------- */
+const gaugeIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.bar-fill').forEach((f, i) => {
+      setTimeout(() => { f.style.width = f.dataset.w + '%'; }, i * 180);
+    });
+    gaugeIO.unobserve(e.target);
+  });
+}, {threshold:0.4});
+document.querySelectorAll('[data-gauge]').forEach(el => gaugeIO.observe(el));
+
+/* ---------- active nav link ---------- */
+const sections = ['what','serve','services','outcomes','contact'];
+const navMap = {};
+sections.forEach(id => { navMap[id] = document.querySelector('#navLinks a[href="#'+id+'"]'); });
+const activeIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){
+      Object.values(navMap).forEach(a => a && a.classList.remove('active'));
+      const a = navMap[e.target.id]; if (a) a.classList.add('active');
+    }
+  });
+}, {rootMargin:'-45% 0px -50% 0px'});
+sections.forEach(id => { const s = document.getElementById(id); if (s) activeIO.observe(s); });
+</script>
+</body>
+</html>

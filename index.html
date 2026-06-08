@@ -246,7 +246,7 @@ body.menu-open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
   margin-top:clamp(40px,5vw,64px); border-top:1px dashed var(--sand-2); padding-top:42px; position:relative;
 }
 .route-strip .rs-label{font-family:var(--ff-mono); font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:26px}
-.stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; position:relative}
+.stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; position:relative}
 .stat-row::before{content:""; position:absolute; top:18px; left:6%; right:6%; height:2px; background-image:linear-gradient(90deg,var(--sand-2) 50%,transparent 0); background-size:14px 2px; background-repeat:repeat-x; opacity:.9}
 .stat{position:relative; padding-top:42px; text-align:center}
 .stat .pin{position:absolute; top:8px; left:50%; transform:translateX(-50%); width:20px; height:20px; background:var(--cream); border-radius:50%; display:grid; place-items:center}
@@ -419,7 +419,7 @@ footer{background:var(--ink-2); color:var(--on-dark-mut); padding:70px 0 34px; b
   .nav-links .nav-cta{margin-top:18px}
   .nav-links .btn{justify-content:center}
   .menu-btn{display:flex}
-  .stat-row{grid-template-columns:1fr 1fr; gap:30px 18px}
+  .stat-row{grid-template-columns:1fr; gap:30px}
   .stat-row::before{display:none}
   .two-col{grid-template-columns:1fr}
   .hero-stats{gap:22px 30px}
@@ -573,10 +573,9 @@ footer{background:var(--ink-2); color:var(--on-dark-mut); padding:70px 0 34px; b
     <div class="route-strip reveal">
       <div class="rs-label">// Across a nationwide network</div>
       <div class="stat-row">
-        <div class="stat"><span class="pin"><i></i></span><b data-count="10" data-suffix="M+">10M+</b><span>Covered members nationwide</span></div>
-        <div class="stat"><span class="pin"><i></i></span><b data-count="350" data-suffix="+">350+</b><span>Credentialed surgeons</span></div>
-        <div class="stat"><span class="pin"><i></i></span><b data-count="12" data-suffix="k+">12k+</b><span>Patients seen</span></div>
-        <div class="stat"><span class="pin"><i></i></span><b data-count="8" data-suffix="k+">8k+</b><span>Surgeries performed</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="7" data-suffix="M+">7M+</b><span>Covered members nationwide</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="100" data-suffix="+">100+</b><span>Credentialed surgeons</span></div>
+        <div class="stat"><span class="pin"><i></i></span><b data-count="150" data-suffix="+">150+</b><span>Credentialed facilities</span></div>
       </div>
     </div>
   </div>

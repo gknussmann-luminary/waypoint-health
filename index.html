@@ -308,13 +308,13 @@ body.menu-open .menu-btn span::after{transform:translateY(-6px) rotate(-45deg)}
 .bar-line{display:flex; align-items:center; gap:14px; margin-bottom:12px}
 .bar-line:last-child{margin-bottom:0}
 .bar-line .bl-name{flex:0 0 92px; font-size:.82rem; color:var(--muted)}
-.bar-track{flex:1; height:30px; background:var(--cream-2); border-radius:8px; overflow:hidden; position:relative; border:1px solid var(--sand)}
-.bar-fill{height:100%; width:0; border-radius:8px 0 0 8px; transition:width 1.1s var(--ease); display:flex; align-items:center; justify-content:flex-end; padding-right:10px}
+.bar-track{flex:1; height:30px; background:var(--cream-2); border-radius:8px; overflow:hidden; position:relative; border:1px solid var(--sand); display:flex; align-items:center;}
+.bar-fill{width:0; flex-shrink:0; align-self:stretch; border-radius:8px 0 0 8px; transition:width 1.1s var(--ease); display:flex; align-items:center; justify-content:flex-end; padding-right:10px}
 .bar-fill.us{background:linear-gradient(90deg,var(--signal),var(--signal-deep))}
 .bar-fill.avg{background:repeating-linear-gradient(45deg,var(--sand-2),var(--sand-2) 6px,var(--sand) 6px,var(--sand) 12px)}
 .bar-fill b{font-family:var(--ff-mono); font-size:.78rem; font-weight:500; color:#fff}
 .bar-fill.avg b{color:var(--text)}
-.bar-lbl{font-family:var(--ff-mono); font-size:.74rem; font-weight:500; color:var(--signal-deep); white-space:nowrap; flex:0 0 auto; padding-left:8px}
+.bar-lbl{font-family:var(--ff-mono); font-size:.74rem; font-weight:500; color:var(--muted); white-space:nowrap; padding-left:10px;}
 
 /* ============================ TESTIMONIALS ============================ */
 .tmint{background:var(--deep); color:var(--on-dark)}
@@ -672,12 +672,12 @@ footer{background:var(--ink-2); color:var(--on-dark-mut); padding:70px 0 34px; b
       <div class="gauge-card reveal d1">
         <div class="gauge" data-gauge>
           <div class="g-top"><span class="g-title">Bariatric complication rate</span><span class="g-sub">Lower is better</span></div>
-          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="24.5"></div></div><b class="bar-lbl">2.3% lower</b></div>
+          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="24.5"></div><b class="bar-lbl">2.3% lower</b></div></div>
           <div class="bar-line"><span class="bl-name">National avg</span><div class="bar-track"><div class="bar-fill avg" data-w="45"><b>5.0%</b></div></div></div>
         </div>
         <div class="gauge" data-gauge>
           <div class="g-top"><span class="g-title">Spine complication rate</span><span class="g-sub">Lower is better</span></div>
-          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="29"></div></div><b class="bar-lbl">7.8% lower</b></div>
+          <div class="bar-line"><span class="bl-name">Waypoint</span><div class="bar-track"><div class="bar-fill us" data-w="29"></div><b class="bar-lbl">7.8% lower</b></div></div>
           <div class="bar-line"><span class="bl-name">National avg</span><div class="bar-track"><div class="bar-fill avg" data-w="100"><b>11%</b></div></div></div>
         </div>
       </div>
